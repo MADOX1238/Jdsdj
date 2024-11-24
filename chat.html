@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAiIHShgHuC_YkFNfWrzPRfEdakgFaZs6Q",
+            authDomain: "mop123-6e1aa.firebaseapp.com",
+            projectId: "mop123-6e1aa",
+            storageBucket: "mop123-6e1aa.firebasestorage.app",
+            messagingSenderId: "321552423577",
+            appId: "1:321552423577:web:393dc53641dcb411f57608",
+            measurementId: "G-FW53W3GXSK"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Get the username from localStorage
+        const username = localStorage.getItem("username");
+
+        // Function to load messages
+        function loadMessages() {
+            const messagesRef = db.collection("messages");
+            messagesRef.orderBy("timestamp").onSnapshot(snapshot => {
+                document.getElementById("messages").innerHTML = ""; // Clear messages
+                snapshot.forEach(doc => {
+                    const messageData = doc.data();
+                    const messageElement = document.createElement("div");
+                    messageElement.textContent = `${messageData.username}: ${messageData.message}`;
+                    document.getElementById("messages").appendChild(messageElement);
+                });
+            });
+        }
+
+        // Function to send a new message
+        function sendMessage() {
+            const message = document.getElementById("message").value;
+            if (message.trim() === "") {
+                alert("Please enter a message");
+                return;
+            }
+
+            // Save the message to Firestore
+            db.collection("messages").add({
+                username: username,
+                message: message,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            document.getElementById("message").value = ""; // Clear input field
+        }
+
+        // Load messages when the page loads
+        window.onload = loadMessages;
+    </script>
+</head>
+<body>
+    <h2>Welcome, <span id="user-name"></span>!</h2>
+    <div id="messages"></div>
+    <input type="text" id="message" placeholder="Type a message">
+    <button onclick="sendMessage()">Send</button>
+    <script>
+        document.getElementById("user-name").textContent = username; // Display the username
+    </script>
+
+</body></html>

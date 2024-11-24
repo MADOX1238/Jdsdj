@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAiIHShgHuC_YkFNfWrzPRfEdakgFaZs6Q",
+            authDomain: "mop123-6e1aa.firebaseapp.com",
+            projectId: "mop123-6e1aa",
+            storageBucket: "mop123-6e1aa.firebasestorage.app",
+            messagingSenderId: "321552423577",
+            appId: "1:321552423577:web:393dc53641dcb411f57608",
+            measurementId: "G-FW53W3GXSK"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function login() {
+            const username = document.getElementById("username").value;
+            if (username.trim() === "") {
+                alert("Please enter a username");
+                return;
+            }
+
+            // Save username to localStorage and navigate to the chat page
+            localStorage.setItem("username", username);
+            window.location.href = "chat.html";
+        }
+    </script>
+</head>
+<body>
+    <h2>Login to Chat</h2>
+    <input type="text" id="username" placeholder="Enter your name">
+    <button onclick="login()">Login</button>
+
+</body></html>
